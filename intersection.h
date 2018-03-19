@@ -3,8 +3,8 @@
 
 struct quadrant {
 
-    //lock current state
-    //lock next state
+    //current state lock 
+    // next state lock
 
 
 };
