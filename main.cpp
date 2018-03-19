@@ -1,6 +1,7 @@
 /* 351-04 Concurrency Project
 Project Members: Bill Nazaroff, <insert names> */
 
+
 #include <iostream>
 #include <vector>
 #include <string>
@@ -11,7 +12,10 @@ using namespace std;
 void main() {
 
 
-//TO DO
+
+
+
+//TO DO: Joon and Bill
 //Create Intersection of 5 quadrants
 //Create random child processes (cars)
 //Create while loop
@@ -25,6 +29,9 @@ void main() {
 //2c. If car is finished with route, release lock and dequeue
 //3. Next Car: Lock current quadrant (for clock cycle 1) and lock next state
 //4. Look for other cars that can lock current and next state 
+
+
+
 
 
 }
