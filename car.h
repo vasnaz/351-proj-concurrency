@@ -14,33 +14,34 @@ typedef enum {
 
 class Car {
 	private:
+	int ID;
 	bool ThroughIntersection;
 	Direction DesiredDirection;
-	int WaitTime;
 	
 	public:
-	Car();
+	Car(int);
 	~Car();
+	
+	int GetID();
 	
 	Direction GetDesiredDirection();
 	
 	void SetThroughIntersection(bool);
 	bool GetThroughIntersection();
 	
-	void IncrementWaitTime();
-	int GetWaitTime();
+	void IsThroughIntersection();
 	
 	
 };
 
-Car::Car() {
+Car::Car(int id) {
+	this->ID = id;
 	int desiredDirection = rand() % 4;
 	this->DesiredDirection = static_cast<Direction>(desiredDirection);
 	
-	this->WaitTime = 0;
 	this->ThroughIntersection = false;
 	
-	/*printf("Created car with random direction: ");
+	printf("Created car %i with random direction: ", this->ID);
 	switch(this->DesiredDirection) {
 		case STRAIGHT:
 		printf("STRAIGHT\n");
@@ -54,11 +55,15 @@ Car::Car() {
 		case UTURN:
 		printf("UTURN\n");
 			break;
-	}*/
+	}
 }
 
 Car::~Car() {
 	
+}
+
+int Car::GetID() {
+	return this->ID;
 }
 
 Direction Car::GetDesiredDirection() {
@@ -73,10 +78,25 @@ bool Car::GetThroughIntersection() {
 	return this->ThroughIntersection;
 }
 
-void Car::IncrementWaitTime() {
-	this->WaitTime++;
-}
-
-int Car::GetWaitTime() {
-	return this->WaitTime;
+void Car::IsThroughIntersection() {
+	this->ThroughIntersection = true;
+	
+	printf("Car %i has ", this->ID);
+	
+	switch(this->DesiredDirection) {
+		case STRAIGHT:
+		printf("gone straight");
+			break;
+		case LEFT:
+		printf("made a left turn");
+			break;
+		case RIGHT:
+		printf("made a right turn");
+			break;
+		case UTURN:
+		printf("made a u-turn");
+			break;
+	}
+	
+	printf(" through the intersection\n");
 }

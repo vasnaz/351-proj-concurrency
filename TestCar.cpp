@@ -12,7 +12,7 @@ int main() {
 	
 	//Create 10 cars
 	for(int i=0;i<100;i++) {
-		Car car;
+		Car car(i);
 		
 		switch(car.GetDesiredDirection()) {
 			case STRAIGHT:
@@ -28,6 +28,8 @@ int main() {
 				UTurn++;
 				break;
 		}
+		
+		car.IsThroughIntersection();
 	}
 	
 	printf("Straight: %i\n", Straight);
