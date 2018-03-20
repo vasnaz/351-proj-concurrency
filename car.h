@@ -1,6 +1,3 @@
-<<<<<<< Updated upstream
-//car class
-=======
 //car class
 //Brian: Cars and threading
 //Beau: Threading
@@ -83,4 +80,3 @@ void Car::IncrementWaitTime() {
 int Car::GetWaitTime() {
 	return this->WaitTime;
 }
->>>>>>> Stashed changes
