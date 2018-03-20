@@ -1,5 +1,5 @@
 //quadrant class
-
+//Jonathan and Beau
 
 struct quadrant {
 
