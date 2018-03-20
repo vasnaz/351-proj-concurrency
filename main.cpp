@@ -9,18 +9,24 @@
 #define NUM_THREADS 4
 
 intersection a;
+int b[4][2] = { {1, 4}, {2, 1}, {3, 2}, {4, 3} };
 void *PrintHello(void *threadid)
 {
 	long tid;
 	tid = (long)threadid;
-	for(int i = 0; i< 4; i++)
+	for(int i = 0; i< 2; i++)
 	{
-	sleep(rand()%4);
-	
-	a.access(i);
-	cout << "Thread: " << tid << endl;
-	
+		sleep(rand()%4);
+		while(a.access(b[tid][i]))
+		{
+			//cout << "Thread: " << tid << endl;
+		}
 	}
+	for(int i = 0; i< 2; i++)
+	{
+		a.setFree(b[tid][i]);
+	}
+	cout << tid << " Thread: " << tid << ", has driven straight." << endl;
 	pthread_exit(NULL);
 }
 int main()
