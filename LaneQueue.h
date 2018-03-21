@@ -1,7 +1,6 @@
 #pragma once
 #include <cstdio>
 #include <cstdlib>
-#include "car.h"
 using namespace std;
 
 #define MAX_CARS 400
