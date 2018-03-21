@@ -36,15 +36,15 @@ public:
 	{
 		end = front = 0;
 	}
-	void enqueue(Car *a)
+	void enqueue(Car *add)
 	{
-		end = new CarNode(a, end);
+		end = new CarNode(add, end);
 		if (front == 0)
 			front = end;
 	}
-	int dequeue()
+	Car dequeue()
 	{
-		int temp = front->id;	
+		Car *temp = front->hold;	
 		CarNode *tmp = front;	
 
 		if (front == end)		
@@ -55,13 +55,13 @@ public:
 		}
 
 		delete tmp;				
-		return temp;
+		return *temp;
 	}
 
 	void printAll() const // test purpose
 	{
 		for (CarNode *tmp = front; tmp != 0; tmp = tmp->next)
-			cout << tmp->id << " ";
+			cout << tmp->hold->GetID << " ";
 		cout << endl;
 	}
 
