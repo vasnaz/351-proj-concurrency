@@ -20,9 +20,9 @@ class CarNode
 {
 public:
 
-	Car hold;
+	Car *hold;
 	CarNode *next;
-	CarNode (Car niceone, CarNode *ptr = 0) 
+	CarNode (Car *niceone, CarNode *ptr = 0) 
 	{
 		hold = niceone;
 		next = ptr;
@@ -36,9 +36,9 @@ public:
 	{
 		end = front = 0;
 	}
-	void enqueue(Car a)
+	void enqueue(Car *a)
 	{
-		end = new CarNode(num, end);
+		end = new CarNode(a, end);
 		if (front == 0)
 			front = end;
 	}
@@ -118,76 +118,76 @@ void main(int argc, char *argv[]) {
 		case STRAIGHT:
 			switch (rand() % 8) {
 			case 0:
-				NorthLeft->enqueue(car);
+				NorthLeft->enqueue(&car);
 				break;
 			case 1:
-				NorthRight->enqueue(car);
+				NorthRight->enqueue(&car);
 				break;
 			case 2:
-				SouthLeft->enqueue(car);
+				SouthLeft->enqueue(&car);
 				break;
 			case 3:
-				SouthRight->enqueue(car);
+				SouthRight->enqueue(&car);
 				break;
 			case 4:
-				EastLeft->enqueue(car);
+				EastLeft->enqueue(&car);
 				break;
 			case 5:
-				EastRight->enqueue(car);
+				EastRight->enqueue(&car);
 				break;
 			case 6:
-				WestLeft->enqueue(car);
+				WestLeft->enqueue(&car);
 				break;
 			case 7:
-				WestRight->enqueue(car);
+				WestRight->enqueue(&car);
 				break;
 			}
 			break;
 		case LEFT:
 			switch (rand() % 4) {
 			case 0:
-				NorthLeft->enqueue(car);
+				NorthLeft->enqueue(&car);
 				break;
 			case 1:
-				SouthLeft->enqueue(car);
+				SouthLeft->enqueue(&car);
 				break;
 			case 2:
-				EastLeft->enqueue(car);
+				EastLeft->enqueue(&car);
 				break;
 			case 3:
-				WestLeft->enqueue(car);
+				WestLeft->enqueue(&car);
 				break;
 			}
 			break;
 		case UTURN:
 			switch (rand() % 4) {
 			case 0:
-				NorthLeft->enqueue(car);
+				NorthLeft->enqueue(&car);
 				break;
 			case 1:
-				SouthLeft->enqueue(car);
+				SouthLeft->enqueue(&car);
 				break;
 			case 2:
-				EastLeft->enqueue(car);
+				EastLeft->enqueue(&car);
 				break;
 			case 3:
-				WestLeft->enqueue(car);
+				WestLeft->enqueue(&car);
 				break;
 			}
 			break;
 		case RIGHT:
 			switch (rand() % 4) {
 			case 0:
-				NorthRight->enqueue(car);
+				NorthRight->enqueue(&car);
 				break;
 			case 1:
-				SouthRight->enqueue(car);
+				SouthRight->enqueue(&car);
 				break;
 			case 2:
-				EastRight->enqueue(car);
+				EastRight->enqueue(&car);
 				break;
 			case 3:
-				WestRight->enqueue(car);
+				WestRight->enqueue(&car);
 				break;
 			}
 			break;
