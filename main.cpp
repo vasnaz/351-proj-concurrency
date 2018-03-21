@@ -13,7 +13,7 @@ Project Members: Bill Nazaroff, Joon Choi */
 
 using namespace std;
 
-#define NUM_CARS 200
+#define NUM_CARS 400
 #define NUM_THREADS 4
 
 //Linked List Class for car queue for each direction
