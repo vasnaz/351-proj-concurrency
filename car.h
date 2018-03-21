@@ -15,7 +15,6 @@ typedef enum {
 class Car {
 	private:
 	int ID;
-	bool ThroughIntersection;
 	Direction DesiredDirection;
 	
 	public:
@@ -26,11 +25,7 @@ class Car {
 	
 	Direction GetDesiredDirection();
 	
-	void SetThroughIntersection(bool);
-	bool GetThroughIntersection();
-	
-	void IsThroughIntersection();
-	
+	void IsThroughIntersection();	
 	
 };
 
@@ -38,8 +33,6 @@ Car::Car(int id) {
 	this->ID = id;
 	int desiredDirection = rand() % 4;
 	this->DesiredDirection = static_cast<Direction>(desiredDirection);
-	
-	this->ThroughIntersection = false;
 	
 	printf("Created car %i with random direction: ", this->ID);
 	switch(this->DesiredDirection) {
@@ -69,18 +62,7 @@ int Car::GetID() {
 Direction Car::GetDesiredDirection() {
 	return this->DesiredDirection;
 }
-
-void Car::SetThroughIntersection(bool through) {
-	this->ThroughIntersection = through;
-}
-
-bool Car::GetThroughIntersection() {
-	return this->ThroughIntersection;
-}
-
-void Car::IsThroughIntersection() {
-	this->ThroughIntersection = true;
-	
+void Car::IsThroughIntersection() {	
 	printf("Car %i has ", this->ID);
 	
 	switch(this->DesiredDirection) {
