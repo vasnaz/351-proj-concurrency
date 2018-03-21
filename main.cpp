@@ -14,6 +14,7 @@ void *PrintHello(void *threadid)
 {
 	long tid;
 	tid = (long)threadid;
+	
 	for(int i = 0; i< 2; i++)
 	{
 		sleep(rand()%2);
@@ -27,6 +28,7 @@ void *PrintHello(void *threadid)
 		a.setFree(b[tid][i], tid);
 	}
 	cout << "-----"<< tid << " Thread: " << tid << ", has driven straight." << endl;
+
 	pthread_exit(NULL);
 }
 int main()
@@ -34,8 +36,11 @@ int main()
 	pthread_t threads[NUM_THREADS];
 	int rc;
 	int i;
-	sem_init(&readA, 0, 1);
-	
+
+	for(i = 0; i < 4; i++)
+	{	
+	sem_init(&readA[i], 0, 1);
+	}
 	for(i = 0; i < NUM_THREADS; i++)
 	{
 		cout << "main (): creating thread: "<< i << endl;
@@ -47,8 +52,9 @@ int main()
 		}
 	}
 	pthread_exit(NULL);
-	
-	sem_destroy(&readA);
-	
+	for(i = 0; i < 4; i++)
+	{
+	sem_destroy(&readA[i]);
+	}
 	return 0;
 }

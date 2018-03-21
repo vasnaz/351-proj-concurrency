@@ -7,7 +7,7 @@
 #include <semaphore.h>
 using namespace std;
 //sem_t lockQSem;
-sem_t readA;
+sem_t readA[4];
 struct quadrant {
 
     //current state lock 
@@ -40,8 +40,10 @@ public:
 //functions to lock areas of intersection
 	bool access(int quad, int tid)
 	{
-		sem_wait(&readA);
-		if(!Q[quad-1].full)
+		cout << "Thread " << tid << ": Waiting for quad " << quad << endl;
+		sem_wait(&readA[quad-1]);
+		
+		/*if(!Q[quad-1].full)
 		{
 			Q[quad-1].full = true;
 			cout << tid << ": Quadrant " << Q[quad-1].num << " available and snatched.\n";
@@ -54,11 +56,17 @@ public:
 			sem_post(&readA);
 			return false;
 		}
+		*/
+		cout << "Thread "<< tid << ": Now have quad " << quad << endl;
+		return true;
 	}
 	void setFree(int quad, int tid)
 	{
-		Q[quad-1].full = false;
+		cout << "!Thread" << tid << ": set free: " << quad << endl;
+		sem_post(&readA[quad-1]);
+		/*Q[quad-1].full = false;
 		cout << tid << ": Quadrant " << Q[quad-1].num << " is free.\n";
+		*/
 	}
 
 
