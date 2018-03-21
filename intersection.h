@@ -38,27 +38,27 @@ public:
 		}
 	}
 //functions to lock areas of intersection
-	bool access(int quad)
+	bool access(int quad, int tid)
 	{
 		sem_wait(&readA);
 		if(!Q[quad-1].full)
 		{
 			Q[quad-1].full = true;
-			cout << "Quadrant " << Q[quad-1].num << " available and snatched.\n";
+			cout << tid << ": Quadrant " << Q[quad-1].num << " available and snatched.\n";
 			sem_post(&readA);
 			return true;
 		}
 		else
 		{
-			cout << "Quadrant " << Q[quad-1].num << " unavailable.\n";
+			//cout << tid << ": Quadrant " << Q[quad-1].num << " unavailable.\n";
 			sem_post(&readA);
 			return false;
 		}
 	}
-	void setFree(int quad)
+	void setFree(int quad, int tid)
 	{
 		Q[quad-1].full = false;
-		cout << "Quadrant " << Q[quad-1].num << " is free.\n";
+		cout << tid << ": Quadrant " << Q[quad-1].num << " is free.\n";
 	}
 
 

@@ -16,17 +16,17 @@ void *PrintHello(void *threadid)
 	tid = (long)threadid;
 	for(int i = 0; i< 2; i++)
 	{
-		sleep(rand()%4);
-		while(a.access(b[tid][i]))
+		sleep(rand()%2);
+		while(!a.access(b[tid][i], tid))
 		{
 			//cout << "Thread: " << tid << endl;
 		}
 	}
 	for(int i = 0; i< 2; i++)
 	{
-		a.setFree(b[tid][i]);
+		a.setFree(b[tid][i], tid);
 	}
-	cout << tid << " Thread: " << tid << ", has driven straight." << endl;
+	cout << "-----"<< tid << " Thread: " << tid << ", has driven straight." << endl;
 	pthread_exit(NULL);
 }
 int main()
