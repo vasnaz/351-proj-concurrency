@@ -7,14 +7,16 @@ Project Members: Bill Nazaroff, Joon Choi */
 #include <string>
 #include <pthread.h>
 #include <semaphore.h>
+#include <unistd.h>
 #include "car.h"
-//#include "intersection.h"
+#include "intersection.h"
 
 using namespace std;
 
 #define NUM_CARS 200
+#define NUM_THREADS 4
 
-//Linked List Class for cars from each lane; North, South, East, and West
+//Linked List Class for car queue for each direction
 
 class CarNode
 {
@@ -113,7 +115,7 @@ void main(int argc, char *argv[]) {
 	CarList *WestLeft = new CarList();
 	CarList *WestRight = new CarList();
 
-	pthread_t thread[NUM_CARS];
+	pthread_t thread[NUM_THREADS];
 
 	sem_t quad1;
 	sem_t quad2;
