@@ -63,14 +63,14 @@ public:
 		delete tmp;				
 		return *temp;
 	}
-
+	
 	void printAll() const // test purpose
 	{
 		for (CarNode *tmp = front; tmp != 0; tmp = tmp->next)
-			cout << tmp->hold->GetID << " ";
+			cout << tmp->hold->GetID() << " ";
 		cout << endl;
 	}
-
+	
 	~CarList()
 	{
 		while (front != NULL)
@@ -87,7 +87,7 @@ private:
 
 
 
-void main(int argc, char *argv[]) {
+int main(int argc, char *argv[]) {
 	//TO DO: Joon and Bill
 	//Create Intersection of 5 quadrants
 	//Create random child processes (cars)
@@ -115,7 +115,7 @@ void main(int argc, char *argv[]) {
 	CarList *WestLeft = new CarList();
 	CarList *WestRight = new CarList();
 
-	pthread_t thread[NUM_THREADS];
+	pthread_t threads[NUM_THREADS];
 	int rc;
 	int i;
 
@@ -219,7 +219,7 @@ void main(int argc, char *argv[]) {
 	for (i = 0; i < NUM_THREADS; i++)
 	{
 		cout << "main (): creating thread: " << i << endl;
-		rc = pthread_create(&threads[i], NULL, (void *) &intersection, (void*)i);
+		//rc = pthread_create(&threads[i], NULL, , (void*)i);
 		if (rc)
 		{
 			cout << "unable to create thread: " << i << endl;
