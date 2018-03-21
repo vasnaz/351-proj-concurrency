@@ -116,6 +116,8 @@ void main(int argc, char *argv[]) {
 	CarList *WestRight = new CarList();
 
 	pthread_t thread[NUM_THREADS];
+	int rc;
+	int i;
 
 	sem_t quad1;
 	sem_t quad2;
@@ -210,17 +212,27 @@ void main(int argc, char *argv[]) {
 		}
 	}
 		//need to initialize quads and starrt pthread_creates
-		sem_init(&quad1, 0, 1);
-		for (int i = 0; i < NUM_THREADS; i++)
+	for (i = 0; i < 4; i++)
+	{
+		sem_init(&readA[i], 0, 1);
+	}
+	for (i = 0; i < NUM_THREADS; i++)
+	{
+		cout << "main (): creating thread: " << i << endl;
+		rc = pthread_create(&threads[i], NULL, (void *) &intersection, (void*)i);
+		if (rc)
 		{
-			//pthread_create(&thread[i], NULL, (void *) &intersection, (void *) )
+			cout << "unable to create thread: " << i << endl;
+			exit(-1);
 		}
-		sem_init(&quad2, 0, 1);
-		sem_init(&quad3, 0, 1);
-		sem_init(&quad4, 0, 1);
-		
+	}
+	pthread_exit(NULL);
+	for (i = 0; i < 4; i++)
+	{
+		sem_destroy(&readA[i]);
+	}
+	return 0;
 
 	}
 
 
-}
