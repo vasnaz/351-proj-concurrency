@@ -1,6 +1,13 @@
-
 /* 351-04 Concurrency Project
-Project Members: Bill Nazaroff, Joon Choi */
+Project Members:
+Jonathan Bedoy
+Joon Choi
+Oscar Gallo
+Beau Badilla
+Bill Nazaroff
+Brian Bugert
+
+*/
 
 
 #include <iostream>
