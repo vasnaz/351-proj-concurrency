@@ -64,6 +64,11 @@ public:
 		delete tmp;				
 		return *temp;
 	}
+	bool isEmpty()
+	{
+		if(front == 0){return true;}
+		else{return false;}
+	}
 	
 	void printAll() const // test purpose
 	{
@@ -99,25 +104,27 @@ void *simStart(void* threadid)
 {
 	long tid;
 	tid = (long)threadid;
-	while(1)
+	bool exit = false;
+	while(!exit)
 	{
 	int choice = rand() % 4;
-	if(threadid == (void*)0)
-	{
+	if(threadid == (void*)0 && !North->isEmpty())
+	{	
 		simN(North->dequeue());
 	}
-	else if(threadid == (void*)1)
+	else if(threadid == (void*)1 && !East->isEmpty())
 	{
 		simE(East->dequeue());
 	}	
-	else if(threadid == (void*)2)
+	else if(threadid == (void*)2 && !South->isEmpty())
 	{
 		simS(South->dequeue());
 	}
-	else if(threadid == (void*)3)
+	else if(threadid == (void*)3 && !West->isEmpty())
 	{
 		simW(West->dequeue());
 	}
+	else{exit = true;}
 	}
 cout << "visited\n";
 	pthread_exit(NULL);
