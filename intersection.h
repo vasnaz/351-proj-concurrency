@@ -42,7 +42,7 @@ public:
     {
         //cout << "Thread " << tid << ": Waiting for quad " << quad << endl;
         if(quad <= 0 || quad > 4){return;}
-        cout<< "Waiting for quad: " << quad << endl;
+        //cout<< "Waiting for quad: " << quad << endl;
         sem_wait(&readA[quad-1]);
         
         /*if(!Q[quad-1].full)
@@ -60,14 +60,14 @@ public:
         }
         */
         //cout << "Thread "<< tid << ": Now have quad " << quad << endl;
-        cout << "Reserved quad: " << quad << endl;        
+        //cout << "Reserved quad: " << quad << endl;        
         
     }
     void setFree(int quad)//, int tid)
     {
         if(quad <= 0 || quad > 4){return;}
         //cout << "!Thread" << tid << ": set free: " << quad << endl;
-        cout << "Set Free quad: " << quad << endl;        
+        //cout << "Set Free quad: " << quad << endl;        
         sem_post(&readA[quad-1]);
         /*Q[quad-1].full = false;
         cout << tid << ": Quadrant " << Q[quad-1].num << " is free.\n";

@@ -8,88 +8,15 @@ Project Members: Bill Nazaroff, Joon Choi */
 #include <string>
 #include <pthread.h>
 #include <semaphore.h>
-#include <unistd.h>
+#include <unistd.h>	
 #include "car.h"
 #include "intersection.h"
+#include "CarList.h"
 
 using namespace std;
 
 #define NUM_CARS 400
 #define NUM_THREADS 4
-
-//Linked List Class for car queue for each direction
-
-class CarNode
-{
-public:
-
-	Car *hold;
-	CarNode *next;
-	CarNode (Car *niceone, CarNode *ptr = 0) 
-	{
-		hold = niceone;
-		next = ptr;
-	}
-};
-
-class CarList
-{
-public:
-	CarList()
-	{
-		end = front = 0;
-	}
-	void enqueue(Car *add)
-	{
-		if (end != 0)
-		{
-			end->next = new CarNode(add);
-			end = end->next;
-		}
-		else
-			front = end = new CarNode(add);
-	}
-	Car dequeue()
-	{
-		Car *temp = front->hold;	
-		CarNode *tmp = front;	
-
-		if (front == end)		
-			front = end = 0;	
-		else
-		{
-			front = front->next;	
-		}
-
-		delete tmp;				
-		return *temp;
-	}
-	bool isEmpty()
-	{
-		if(front == 0){return true;}
-		else{return false;}
-	}
-	
-	void printAll() const // test purpose
-	{
-		for (CarNode *tmp = front; tmp != 0; tmp = tmp->next)
-			cout << tmp->hold->GetID() << " ";
-		cout << endl;
-	}
-	
-	~CarList()
-	{
-		while (front != NULL)
-		{
-			CarNode *temp = front->next;
-			delete[] front;
-			front = temp;
-		}
-	}
-
-private:
-	CarNode *end, *front;
-};
 
 intersection a;
 CarList *North = new CarList();
@@ -107,48 +34,31 @@ void *simStart(void* threadid)
 	bool exit = false;
 	while(!exit)
 	{
-	int choice = rand() % 4;
-	if(threadid == (void*)0 && !North->isEmpty())
-	{	
-		simN(North->dequeue());
+		cout << threadid << ": ";
+		if(threadid == (void*)0 && !North->isEmpty())
+		{	
+			simN(North->dequeue());
+		}
+		else if(threadid == (void*)1 && !East->isEmpty())
+		{
+			simE(East->dequeue());
+		}	
+		else if(threadid == (void*)2 && !South->isEmpty())
+		{
+			simS(South->dequeue());
+		}
+		else if(threadid == (void*)3 && !West->isEmpty())
+		{
+			simW(West->dequeue());
+		}
+		else{exit = true;}
+		
+		usleep((rand()%2)* 1000 * 100);
 	}
-	else if(threadid == (void*)1 && !East->isEmpty())
-	{
-		simE(East->dequeue());
-	}	
-	else if(threadid == (void*)2 && !South->isEmpty())
-	{
-		simS(South->dequeue());
-	}
-	else if(threadid == (void*)3 && !West->isEmpty())
-	{
-		simW(West->dequeue());
-	}
-	else{exit = true;}
-	}
-cout << "visited\n";
+	
 	pthread_exit(NULL);
 }
 int main(int argc, char *argv[]) {
-	//TO DO: Joon and Bill
-	//Create Intersection of 5 quadrants
-	//Create random child processes (cars)
-	//Create while loop
-	/*Loop needs to take in cars, check the path in the intersection, and check locks */
-
-	//Process
-	//1. Enqueue cars into Linked list and add to array (if necessary)
-
-	//2. If any cars have gone (i.e. driven their route), move to next quadrant
-	//2a. Release Current quad lock and next state quad lock
-	//2b. Lock current quad lock of the next quadrant of the route
-	//2c. If car is finished with route, release lock and dequeue
-
-	//3. Next Car: Lock current quadrant (for clock cycle 1) and lock next state
-	//4. Look for other cars that can lock current and next state 
-
-
-	
 
 	pthread_t threads[NUM_THREADS];
 	int rc;
@@ -181,11 +91,14 @@ int main(int argc, char *argv[]) {
 		}
 		
 	}
-		//need to initialize quads and starrt pthread_creates
+	
+	//Initialize semaphores
 	for (i = 0; i < 4; i++)
 	{
 		sem_init(&readA[i], 0, 1);
 	}
+	
+	//Start threads
 	for (i = 0; i < NUM_THREADS; i++)
 	{
 		cout << "main (): creating thread: " << i << endl;
@@ -196,8 +109,12 @@ int main(int argc, char *argv[]) {
 			exit(-1);
 		}
 	}
-	//sim1(NorthRight->dequeue());
-	pthread_exit(NULL);
+	for(int i=0;i<NUM_THREADS;i++) {
+		pthread_join(threads[i], NULL);
+	}
+	
+	
+	//Destroy semaphores
 	for (i = 0; i < 4; i++)
 	{
 		sem_destroy(&readA[i]);
@@ -215,7 +132,6 @@ void simN(Car b)
 			a.access(2);
 			a.setFree(3);
 			a.setFree(2);
-			cout << "--Car drove straight.\n";
 			break;
 		case LEFT:
 			a.access(4);
@@ -224,22 +140,21 @@ void simN(Car b)
 			a.setFree(4);
 			a.setFree(3);
 			a.setFree(2);
-			cout << "--Car made Left turn.\n";
 			break;
 		case UTURN:
 			a.access(2);
 			a.access(1);
 			a.setFree(2);
 			a.setFree(1);
-			cout << "--Car made U-turn.\n";
 			break;
 		case RIGHT:
 			a.access(2);
 			a.setFree(2);
-			cout << "--Car made right turn.\n";
 			break;
 
-		}
+	}
+	
+	b.IsThroughIntersection();
 }
 void simE(Car b)
 {
@@ -250,7 +165,6 @@ void simE(Car b)
 			a.access(1);
 			a.setFree(2);
 			a.setFree(1);
-			cout << "--Car drove straight.\n";
 			break;
 		case LEFT:
 			a.access(3);
@@ -259,22 +173,21 @@ void simE(Car b)
 			a.setFree(3);
 			a.setFree(2);
 			a.setFree(1);
-			cout << "--Car made Left turn.\n";
 			break;
 		case UTURN:
 			a.access(4);
 			a.access(1);
 			a.setFree(4);
 			a.setFree(1);
-			cout << "--Car made U-turn.\n";
 			break;
 		case RIGHT:
 			a.access(1);
 			a.setFree(1);
-			cout << "--Car made Right turn.\n";
 			break;
 
-		}
+	}
+	
+	b.IsThroughIntersection();
 }
 void simS(Car b)
 {
@@ -285,7 +198,6 @@ void simS(Car b)
 			a.access(1);
 			a.setFree(4);
 			a.setFree(1);
-			cout << "--Car drove straight.\n";
 			break;
 		case LEFT:
 			a.access(4);
@@ -294,22 +206,21 @@ void simS(Car b)
 			a.setFree(4);
 			a.setFree(2);
 			a.setFree(1);
-			cout << "--Car made Left turn.\n";
 			break;
 		case UTURN:
 			a.access(4);
 			a.access(3);
 			a.setFree(4);
 			a.setFree(3);
-			cout << "--Car made U-turn.\n";
 			break;
 		case RIGHT:
 			a.access(4);
 			a.setFree(4);
-			cout << "--Car made Right turn.\n";
 			break;
 
-		}
+	}
+	
+	b.IsThroughIntersection();
 }
 void simW(Car b)
 {
@@ -320,7 +231,6 @@ void simW(Car b)
 			a.access(3);
 			a.setFree(4);
 			a.setFree(3);
-			cout << "--Car drove straight.\n";
 			break;
 		case LEFT:
 			a.access(4);
@@ -329,21 +239,20 @@ void simW(Car b)
 			a.setFree(4);
 			a.setFree(3);
 			a.setFree(1);
-			cout << "--Car made Left turn.\n";
 			break;
 		case UTURN:
 			a.access(3);
 			a.access(2);
 			a.setFree(3);
 			a.setFree(2);
-			cout << "--Car made U-turn.\n";
 			break;
 		case RIGHT:
 			a.access(3);
 			a.setFree(3);
-			cout << "--Car made Right turn.\n";
 			break;
 
-		}
+	}
+	
+	b.IsThroughIntersection();
 
 }
