@@ -4,6 +4,7 @@ Project Members: Bill Nazaroff, Joon Choi */
 
 
 #include <iostream>
+#include <cstdio>
 #include <vector>
 #include <string>
 #include <pthread.h>
@@ -27,6 +28,12 @@ void simN(Car b);
 void simE(Car b);
 void simS(Car b);
 void simW(Car b);
+
+int StraightCount;
+int LeftCount;
+int RightCount;
+int UTurnCount;
+
 void *simStart(void* threadid)
 {
 	long tid;
@@ -34,21 +41,24 @@ void *simStart(void* threadid)
 	bool exit = false;
 	while(!exit)
 	{
-		cout << threadid << ": ";
 		if(threadid == (void*)0 && !North->isEmpty())
-		{	
+		{
+			cout << threadid << ": ";
 			simN(North->dequeue());
 		}
 		else if(threadid == (void*)1 && !East->isEmpty())
 		{
+			cout << threadid << ": ";
 			simE(East->dequeue());
 		}	
 		else if(threadid == (void*)2 && !South->isEmpty())
 		{
+			cout << threadid << ": ";
 			simS(South->dequeue());
 		}
 		else if(threadid == (void*)3 && !West->isEmpty())
 		{
+			cout << threadid << ": ";
 			simW(West->dequeue());
 		}
 		else{exit = true;}
@@ -69,12 +79,33 @@ int main(int argc, char *argv[]) {
 	sem_t quad3;
 	sem_t quad4;
 	sem_t center;
+	
+	StraightCount = 0;
+	LeftCount = 0;
+	RightCount = 0;
+	UTurnCount = 0;
 
 	bool done = false;
 
 	
 	for (int i = 0; i < NUM_CARS; i++) {
 		Car *car = new Car(i);
+		
+		switch(car->GetDesiredDirection()) {
+			case STRAIGHT:
+				StraightCount++;
+				break;
+			case LEFT:
+				LeftCount++;
+				break;
+			case RIGHT:
+				RightCount++;
+				break;
+			case UTURN:
+				UTurnCount++;
+				break;
+		}
+		
 		switch (rand() % 4) {
 			case 0:
 				North->enqueue(car);
@@ -119,9 +150,19 @@ int main(int argc, char *argv[]) {
 	{
 		sem_destroy(&readA[i]);
 	}
+	
+	
+	printf("Straights: %i\n", StraightCount);
+	printf("Left Turns: %i\n", LeftCount);
+	printf("Right Turns: %i\n", RightCount);
+	printf("U-Turns: %i\n", UTurnCount);
+	printf("Total Cars: %i\n", StraightCount+LeftCount+RightCount+UTurnCount);
+	
 	return 0;
 
-	}
+}
+
+
 //only cars that are North will be here
 void simN(Car b)
 {
