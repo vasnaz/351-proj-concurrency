@@ -102,21 +102,21 @@ void *simStart(void* threadid)
 	while(1)
 	{
 	int choice = rand() % 4;
-	if(choice == 0)
+	if(threadid == (void*)0)
 	{
 		simN(North->dequeue());
 	}
-	else if(choice == 1)
+	else if(threadid == (void*)1)
 	{
 		simE(East->dequeue());
 	}	
-	else if(choice == 2)
+	else if(threadid == (void*)2)
 	{
-		simE(South->dequeue());
+		simS(South->dequeue());
 	}
-	else if(choice == 3)
+	else if(threadid == (void*)3)
 	{
-		simE(West->dequeue());
+		simW(West->dequeue());
 	}
 	}
 cout << "visited\n";
