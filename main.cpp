@@ -158,10 +158,7 @@ int main(int argc, char *argv[]) {
 	
 	for (int i = 0; i < NUM_CARS; i++) {
 		Car *car = new Car(i);
-
-		switch (car->GetDesiredDirection()) {
-		case STRAIGHT:
-			switch (rand() % 4) {
+		switch (rand() % 4) {
 			case 0:
 				North->enqueue(car);
 				break;
@@ -174,57 +171,6 @@ int main(int argc, char *argv[]) {
 			case 3:
 				West->enqueue(car);
 				break;
-			}
-			break;
-		case LEFT:
-			switch (rand() % 4) {
-			case 0:
-				North->enqueue(car);
-				break;
-			case 1:
-				South->enqueue(car);
-				break;
-			case 2:
-				East->enqueue(car);
-				break;
-			case 3:
-				West->enqueue(car);
-				break;
-			}
-			break;
-		case UTURN:
-			switch (rand() % 4) {
-			case 0:
-				North->enqueue(car);
-				break;
-			case 1:
-				South->enqueue(car);
-				break;
-			case 2:
-				East->enqueue(car);
-				break;
-			case 3:
-				West->enqueue(car);
-				break;
-			}
-			break;
-		case RIGHT:
-			switch (rand() % 4) {
-			case 0:
-				North->enqueue(car);
-				break;
-			case 1:
-				South->enqueue(car);
-				break;
-			case 2:
-				East->enqueue(car);
-				break;
-			case 3:
-				West->enqueue(car);
-				break;
-			}
-			break;
-
 		}
 		
 	}
